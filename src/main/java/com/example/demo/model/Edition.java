@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -50,6 +51,12 @@ public class Edition {
 	}
 	public void setGame(Game game) {
 		this.game = game;
+	}
+	public ArrayList<Plataform> getPlataformArray(){
+		return new ArrayList<>(this.game.getPlataform());
+	}
+	public void setPlataformArray(ArrayList<Plataform> plataformArray){
+		this.game.setPlataform(plataformArray);
 	}
 	@Override
 	public int hashCode() {
