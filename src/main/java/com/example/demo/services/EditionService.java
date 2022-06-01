@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Edition;
+import com.example.demo.model.EditionDTO;
 import com.example.demo.model.EditionRepository;
 import com.example.demo.model.Pagination;
 import com.example.demo.model.Plataform;
@@ -24,9 +25,15 @@ public class EditionService {
 	@Autowired
 	private EditionRepository editionRepository;
 	
-	public Page<Edition> getGameEditionsListByStandard(Pagination pagination) {
+	public EditionDTO getGameEditionsListByStandard(Pagination pagination) {
 		Page<Edition> gameEditionList = this.editionRepository.findByName(PageRequest.of(pagination.getPage(),pagination.getSize()),"Standard");
 		List<Edition> content = gameEditionList.getContent().stream().collect(Collectors.toList());
+		Page<Edition> gameEditionListModify = modifyPageRemovingRepeatedPlataforms(content, pagination);
+		boolean lastPage = isLastPage(pagination);
+		return new EditionDTO(gameEditionListModify, lastPage);
+	}
+
+	private Page<Edition> modifyPageRemovingRepeatedPlataforms(List<Edition> content,Pagination pagination) {
 		ArrayList<Edition> editionWithPlataform = new ArrayList<Edition>();
 		for (Edition edition : content) {
 			ArrayList<Plataform> plataformArray = edition.getPlataformArray();
@@ -34,6 +41,11 @@ public class EditionService {
 			editionWithPlataform.add(edition);
 		}
 		return new PageImpl<>(editionWithPlataform, PageRequest.of(pagination.getPage(), pagination.getSize()),editionWithPlataform.size());
+	}
+
+	private boolean isLastPage(Pagination pagination) {
+		Page<Edition> gameEditionListNextPage = this.editionRepository.findByName(PageRequest.of(pagination.getPage() + 1,pagination.getSize()),"Standard");
+		return isLast(gameEditionListNextPage);
 	}
 
 	private ArrayList<Plataform> removeRepeated(ArrayList<Plataform> plataformArray) {
@@ -54,8 +66,22 @@ public class EditionService {
 		return plataformArray;
 	}
 
-	public Page<Edition> getGameEditionListBySearch(String search, Pagination pagination) {
-		return this.editionRepository.findBygame_nameStartingWith(PageRequest.of(pagination.getPage(), pagination.getSize()), search);
+	public EditionDTO getGameEditionListBySearch(String search, Pagination pagination) {
+		Page<Edition> gameEditionListBySearch = this.editionRepository.findBygame_nameStartingWith(PageRequest.of(pagination.getPage(), pagination.getSize()), search);
+		boolean lastPage = isLastPageWithSearch(pagination,search);
+		return new EditionDTO(gameEditionListBySearch, lastPage);
+	}
+	
+	private boolean isLastPageWithSearch(Pagination pagination,String search) {
+		Page<Edition> gameEditionListNextPage = this.editionRepository.findBygame_nameStartingWith(PageRequest.of(pagination.getPage() + 1, pagination.getSize()), search);
+		return isLast(gameEditionListNextPage);
+	}
+
+	private boolean isLast(Page<Edition> gameEditionListNextPage) {
+		if (gameEditionListNextPage.getContent().size() == 0) {
+			return true;
+		} 
+		return false;
 	}
 
 }

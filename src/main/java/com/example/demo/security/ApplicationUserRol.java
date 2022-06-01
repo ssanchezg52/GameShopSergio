@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 public enum ApplicationUserRol {
     //usar SEts me obliga a importar la dependencia GUAVA
 	
-    ADMIN(ApplicationUserPermission.STUDENT_READ,ApplicationUserPermission.STUDENT_WRITE),
-    GUEST(ApplicationUserPermission.STUDENT_READ);
+    ADMIN(ApplicationUserPermission.READ,ApplicationUserPermission.WRITE),
+    GUEST(ApplicationUserPermission.READ);
     private final Set<ApplicationUserPermission> permissions;
     
     ApplicationUserRol(ApplicationUserPermission ...permisions) {

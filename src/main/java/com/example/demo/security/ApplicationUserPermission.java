@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
 public enum ApplicationUserPermission {
-    STUDENT_READ("student:read"),STUDENT_WRITE("student:write");
+    READ("read"),WRITE("write");
 
     private final String permission;
 
