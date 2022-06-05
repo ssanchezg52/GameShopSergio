@@ -15,6 +15,10 @@ public class Pagination {
 	public int getSize() {
 		return size;
 	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	
 	
 
 }

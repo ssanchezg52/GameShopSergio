@@ -78,5 +78,8 @@ public class Edition {
 	public String toString() {
 		return "Edition [editionId=" + editionId + ", name=" + name + ", price=" + price + ", game=" + game + "]";
 	}
+	public boolean thisPlatformExists(String plataform) {
+		return this.game.thisPlataformExists(plataform);
+	}
 	
 }

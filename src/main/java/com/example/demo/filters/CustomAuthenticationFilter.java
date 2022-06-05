@@ -58,7 +58,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String accesToken = JWT.create()
                 .withSubject(user.getUsername())
                 //TimeStamp es para pasar localDAte a DAte y digo de aqui a diez minutos
-                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(2)))
+                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(30)))
                 .withIssuer(request.getRequestURL().toString())
                 .withArrayClaim("roles",
                         user

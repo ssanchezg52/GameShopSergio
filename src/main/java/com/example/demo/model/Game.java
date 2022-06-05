@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -157,6 +158,11 @@ public class Game {
 		return "Game [gameId=" + gameId + ", name=" + name + ", developer=" + developer + ", gender=" + gender
 				+ ", minimum_age=" + minimum_age + ", releaseDate=" + releaseDate + ", description=" + description
 				+ ", trailer=" + trailer + ", coverPage=" + coverPage + ", plataforms=" + plataforms + "]";
+	}
+
+	public boolean thisPlataformExists(String plataformName) {
+		List<Plataform> filter = this.plataforms.stream().filter(plataform -> plataform.getName().equals(plataformName)).collect(Collectors.toList());
+		return filter.isEmpty();
 	}
 
 }
