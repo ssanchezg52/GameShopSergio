@@ -47,11 +47,7 @@ public class EditionService {
 	}
 	
 	private ArrayList<Plataform> removeRepeated(ArrayList<Plataform> plataformArray) {
-		plataformArray.sort(new Comparator<Plataform>() {
-			public int compare(Plataform p1, Plataform p2) {
-				return p1.getName().compareToIgnoreCase(p2.getName());
-			};
-		});
+		plataformArray = sortArrayPlataform(plataformArray);
 		for (int i = 0; i < plataformArray.size()-1; i++) {
 			Plataform plataform = plataformArray.get(i);
 			Plataform plataformNext = plataformArray.get(i+1);
@@ -61,6 +57,15 @@ public class EditionService {
 			}
 			
 		}
+		return plataformArray;
+	}
+	
+	private ArrayList<Plataform> sortArrayPlataform(ArrayList<Plataform> plataformArray){
+		plataformArray.sort(new Comparator<Plataform>() {
+			public int compare(Plataform p1, Plataform p2) {
+				return p1.getName().compareToIgnoreCase(p2.getName());
+			};
+		});
 		return plataformArray;
 	}
 
